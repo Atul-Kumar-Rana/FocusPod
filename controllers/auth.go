@@ -2,33 +2,29 @@ package controllers
 
 import (
 	"encoding/json"
-	"FocusPod./models"
+	"log"
 	// "hash"
 	"net/http"
 	"os"
 	"time"
+	"github.com/Atul-Kumar-Rana/FocusPod/database"
+	"github.com/Atul-Kumar-Rana/FocusPod/models"
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/Atul-Kumar-Rana/FocusPod/database"
 	// "golang.org/x/crypto/bcrypt"
 )
-
 var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 func Signup(w http.ResponseWriter, r *http.Request){
 	var u models.User
 	json.NewDecoder(r.Body).Decode(&u)
-
 	hash,err :=bcrypt.GenerateFromPassword([]byte(u.Password),bcrypt.DefaultCost)
-
 	if err != nil{
-		panic(err)
+		log.Fatal(err)
 	}
 	u.Password=string(hash)
 	database.DB.Create(&u)
 	w.Write(([]byte("User created")))
-
 }
-
 func Login(w http.ResponseWriter, r *http.Request) {
 	var input models.User
 	json.NewDecoder(r.Body).Decode(&input)
