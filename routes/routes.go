@@ -1,12 +1,11 @@
 package routes
 
 import (
+	"github.com/labstack/echo/v4"
 	"github.com/Atul-Kumar-Rana/FocusPod/controllers"
-	"github.com/gorilla/mux"
 )
 
-func RegisterAuthRoutes(r *mux.Router){
-	r.HandleFunc("/signup",controllers.Signup).Methods("POST")
-	r.HandleFunc("/login",controllers.Login).Methods("POST")
-	
+func RegisterAuthRoutes(e *echo.Echo) {
+	e.POST("/users/signup", controllers.SignUp)
+	e.POST("/users/login", controllers.Login)
 }
